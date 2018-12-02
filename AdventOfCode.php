@@ -64,10 +64,11 @@ class AdventOfCode
     }
 
     /**
-     * Day 2 puzzle 1
-     * @return float|int
+     * Day 2 Puzzle 1
+     *
+     * @return int
      */
-    public function boxIDCheckSum()
+    public function boxIDCheckSum(): int
     {
         $twoLetter   = 0;
         $threeLetter = 0;
@@ -85,8 +86,36 @@ class AdventOfCode
         return $twoLetter * $threeLetter;
     }
 
+
+    /**
+     * Day 2 Puzzle 2
+     * @return string
+     */
+    public function boxIDDistance(): string
+    {
+
+        $j                 = 0;
+        $sizeOfArray         = count($this->inputArray);
+        $firstSimilarWord  = '';
+        $secondSimilarWord = '';
+
+        foreach ($this->inputArray as $inputValue) {
+            for ($i = $j; $i < $sizeOfArray - 1; $i++) {
+                $wordCompare = $this->inputArray[$i + 1];
+                if (levenshtein($inputValue, $wordCompare, 2, 1, 2) < 2) {
+                    $firstSimilarWord = $inputValue;
+                    $secondSimilarWord = $wordCompare;
+                    break 2;
+                }
+            }
+            $j++;
+        }
+
+        $letterAppearsOnce = array_search(1, array_count_values(str_split($firstSimilarWord . $secondSimilarWord)), true);
+        return str_replace($letterAppearsOnce,'',$firstSimilarWord);
+    }
 }
 
 $advent = new AdventOfCode();
-echo $advent->boxIDCheckSum();
+echo $advent->boxIDDistance();
 
